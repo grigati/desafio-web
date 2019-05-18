@@ -49,3 +49,10 @@ export function getUsuarios() {
         method: 'GET'
     });
 }
+
+export function deleteUsuario(id) {
+    return request({
+        url: API_BASE_URL + "/usuario/" + id,
+        method: 'DELETE'
+    });
+}

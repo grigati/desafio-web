@@ -1,6 +1,6 @@
 import React from 'react';
 import  { Redirect } from 'react-router-dom';
-import { getUsuarios } from './APIUtils';
+import { getUsuarios, deleteUsuario } from './APIUtils';
 
 class PaginaInicial extends React.Component {
     constructor(props) {
@@ -8,6 +8,8 @@ class PaginaInicial extends React.Component {
         this.state = {
             usuarios: null
         }
+
+        this.deletarUsuario = this.deletarUsuario.bind(this);
     }
 
     componentDidMount() {
@@ -17,6 +19,21 @@ class PaginaInicial extends React.Component {
         })
         .catch(erro => {
             console.error(erro);
+        });
+    }
+
+    deletarUsuario(id, index) {
+        deleteUsuario(id)
+        .then(response => {
+            console.log("Deletado com sucesso")
+            const usuarios = this.state.usuarios;
+            usuarios.splice(index,index);
+            this.setState({
+                usuarios: usuarios
+            })
+        })
+        .catch(erro => {
+            console.error(erro.message)
         });
     }
 
@@ -45,7 +62,7 @@ class PaginaInicial extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.usuarios.map(usuario => {
+                            {this.state.usuarios.map((usuario, index) => {
                                 return (
                                     <tr key={usuario.id}>
                                         <th scope="row">{usuario.id}</th>
@@ -72,7 +89,7 @@ class PaginaInicial extends React.Component {
                                         { (this.props.usuarioAutenticado.roles[0].name === "ROLE_ADMIN") ?
                                             <td>
                                                 <button className="btn btn-sm btn-primary px-2 pb-1">Editar</button>
-                                                <button className="btn btn-sm btn-primary px-2 pb-1">Deletar</button>
+                                                <button className="btn btn-sm btn-primary px-2 pb-1" onClick={() => this.deletarUsuario(usuario.id, index)}>Deletar</button>
                                             </td>
                                             : null
                                         }

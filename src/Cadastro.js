@@ -111,6 +111,7 @@ class Cadastro extends React.Component {
     }
 
     render() {
+      if (this.props.usuarioAutenticado) {
         return (
               <div className="mx-auto" style={{maxWidth:"700px"}}>
                 <form onSubmit={this.enviarCadastro}>
@@ -206,6 +207,13 @@ class Cadastro extends React.Component {
                 </form>
               </div>
           );
+        }
+
+        return (
+          <div>
+              Você precisa entrar para acessar esse recurso.
+          </div>
+      );
     }
 }
 

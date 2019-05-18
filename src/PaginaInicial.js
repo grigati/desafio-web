@@ -1,5 +1,4 @@
 import React from 'react';
-import  { Redirect } from 'react-router-dom';
 import { getUsuarios, deleteUsuario } from './APIUtils';
 
 class PaginaInicial extends React.Component {
@@ -27,7 +26,7 @@ class PaginaInicial extends React.Component {
         .then(response => {
             console.log("Deletado com sucesso")
             const usuarios = this.state.usuarios;
-            usuarios.splice(index,index);
+            usuarios.splice(index, 1);
             this.setState({
                 usuarios: usuarios
             })
@@ -74,7 +73,7 @@ class PaginaInicial extends React.Component {
                                         <td>{usuario.bairro}</td>
                                         <td>{usuario.cidade}</td>
                                         <td>{usuario.uf}</td>
-                                        <td>{usuario.roles[0].name}</td>
+                                        <td>{ (usuario.roles && usuario.roles[0]) ? usuario.roles[0].name : "Não definido"}</td>
                                         <td>{usuario.telefones ?
                                             usuario.telefones.map(telefone => {
                                                 return(
@@ -109,7 +108,9 @@ class PaginaInicial extends React.Component {
         }
             
         return (
-              <Redirect to="/entrar" />
+            <div>
+                Você precisa entrar para acessar esse recurso.
+            </div>
         );
     }
 }

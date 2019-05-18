@@ -78,7 +78,7 @@ class PaginaInicial extends React.Component {
                                             usuario.telefones.map(telefone => {
                                                 return(
                                                     <span key={telefone.id} className="d-block">
-                                                        {telefone.telefone} {telefone.tipo}
+                                                        {telefone.telefone + " (" + telefone.tipo + ")"}
                                                     </span>
                                                 );
                                             })
@@ -87,8 +87,8 @@ class PaginaInicial extends React.Component {
                                         </td>
                                         { (this.props.usuarioAutenticado.roles[0].name === "ROLE_ADMIN") ?
                                             <td>
-                                                <button className="btn btn-sm btn-primary px-2 pb-1">Editar</button>
-                                                <button className="btn btn-sm btn-primary px-2 pb-1" onClick={() => this.deletarUsuario(usuario.id, index)}>Deletar</button>
+                                                <button className="btn btn-sm btn-primary mx-2 mb-1">Editar</button>
+                                                <button className="btn btn-sm btn-primary mx-2 mb-1" onClick={() => this.deletarUsuario(usuario.id, index)}>Deletar</button>
                                             </td>
                                             : null
                                         }

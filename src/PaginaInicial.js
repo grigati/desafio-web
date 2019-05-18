@@ -1,5 +1,6 @@
 import React from 'react';
 import { getUsuarios, deleteUsuario } from './APIUtils';
+import { Link } from 'react-router-dom';
 
 class PaginaInicial extends React.Component {
     constructor(props) {
@@ -87,7 +88,7 @@ class PaginaInicial extends React.Component {
                                         </td>
                                         { (this.props.usuarioAutenticado.roles[0].name === "ROLE_ADMIN") ?
                                             <td>
-                                                <button className="btn btn-sm btn-primary mx-2 mb-1">Editar</button>
+                                                <Link to={`/editar/${usuario.id}`}><button className="btn btn-sm btn-primary mx-2 mb-1">Editar</button></Link>
                                                 <button className="btn btn-sm btn-primary mx-2 mb-1" onClick={() => this.deletarUsuario(usuario.id, index)}>Deletar</button>
                                             </td>
                                             : null

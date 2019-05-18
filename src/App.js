@@ -25,6 +25,7 @@ class App extends React.Component {
         currentUser: response
       });
     }).catch(error => {
+      console.error(error);
       this.setState({
         currentUser: null
       });  
@@ -50,14 +51,22 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Link to="/entrar">Entrar</Link>
-        <Link to="/cadastrar">Cadastrar</Link>
+        <div className="pb-3">
+          <Link to="/" className="px-2">Página Inicial</Link>
+          <Link to="/entrar" className="px-2">Entrar</Link>
+          <Link to="/cadastrar" className="px-2">Cadastrar</Link>
+          { this.state.currentUser ? 
+            <span className="px-2"> Olá, {this.state.currentUser.nome}</span>
+            : null
+          }
+        </div>
 
         <div>
           <Switch>  
-            <Route exact path="/" component={PaginaInicial} />
+            <Route exact path="/"
+                   render={(props) => <PaginaInicial usuarioAutenticado={this.state.currentUser} {...props} /> }  />
             <Route path="/entrar" 
-                  render={(props) => <Login onEntrarSucesso={this.handleEntrar} {...props} /> } />
+                   render={(props) => <Login onEntrarSucesso={this.handleEntrar} {...props} /> } />
             <Route path="/cadastrar" component={Cadastro} />
           </Switch>
         </div>

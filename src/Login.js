@@ -24,6 +24,7 @@ class Login extends React.Component {
 
         solicitarLogin(login)
         .then(response => {
+            localStorage.setItem('ACCESS_TOKEN', response.accessToken);
             this.props.onEntrarSucesso();
         })
         .catch(error => {

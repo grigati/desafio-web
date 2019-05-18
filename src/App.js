@@ -56,7 +56,10 @@ class App extends React.Component {
           <Link to="/entrar" className="px-2">Entrar</Link>
           <Link to="/cadastrar" className="px-2">Cadastrar</Link>
           { this.state.currentUser ? 
-            <span className="px-2"> Olá, {this.state.currentUser.nome}</span>
+            <div className="d-inline">
+              <span className="px-2"> Olá, {this.state.currentUser.nome}</span>
+              <button className="btn btn-sm btn-primary" onClick={this.handleSair}>Sair</button>
+            </div>
             : null
           }
         </div>

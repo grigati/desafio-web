@@ -57,6 +57,14 @@ export function deleteUsuario(id) {
     });
 }
 
+export function enviarCadastro(dadosCadastro) {
+    return request({
+        url: API_BASE_URL + "/usuario",
+        method: 'POST',
+        body: JSON.stringify(dadosCadastro)
+    });
+}
+
 export function buscaCEP(cep) {
     var options = {
         url: "https://viacep.com.br/ws/" + cep + "/json/ ",

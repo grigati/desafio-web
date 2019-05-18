@@ -1,5 +1,5 @@
 import React from 'react';
-import { buscaCEP } from './APIUtils';
+import { buscaCEP, enviarCadastro } from './APIUtils';
 
 class Cadastro extends React.Component {
     constructor(props) { 
@@ -15,7 +15,6 @@ class Cadastro extends React.Component {
           "bairro": "",
           "cidade": "",
           "uf": "",
-          "complemento": "",
           "telefones": [],
           "emails": []
         }
@@ -24,10 +23,13 @@ class Cadastro extends React.Component {
       this.inputEmail = React.createRef();
       this.inputTelefone = React.createRef();
       this.inputTelefoneTipo = React.createRef();
+      this.inputRole = React.createRef();
+
       this.buscarCEP = this.buscarCEP.bind(this);
       this.changeInput = this.changeInput.bind(this);
       this.adicionarEmail = this.adicionarEmail.bind(this);
       this.adicionarTelefone = this.adicionarTelefone.bind(this);
+      this.enviarCadastro = this.enviarCadastro.bind(this);
     }
 
     buscarCEP(event) {
@@ -87,10 +89,39 @@ class Cadastro extends React.Component {
       });
     }
 
+    enviarCadastro(event) {
+      event.preventDefault();
+      var usuario = this.state.usuario;
+      usuario = {
+        ...usuario,
+        roles: [{
+          name: this.inputRole.current.value
+        }]
+      }
+
+      console.log(usuario)
+
+      enviarCadastro(usuario)
+      .then(response => {
+        console.log("Cadastro efetuado com sucesso");
+      })
+      .catch(erro => {
+        console.error(erro);
+      })
+    }
+
     render() {
         return (
               <div className="mx-auto" style={{maxWidth:"700px"}}>
-                <form>
+                <form onSubmit={this.enviarCadastro}>
+                <div className="form-group">
+                  <label htmlFor="input-role">Tipo do Usuário</label>
+                    <select className="form-control" id="input-role" ref={this.inputRole}>
+                      <option value="ROLE_ADMIN">Administrador</option>
+                      <option value="ROLE_USER">Usuário Comum</option>
+                    </select>
+                  </div>
+
                   <div className="form-group">
                     <label htmlFor="input-nome">Nome</label>
                     <input type="text" className="form-control" id="input-nome" name="nome" value={this.state.usuario.nome} onChange={this.changeInput} />

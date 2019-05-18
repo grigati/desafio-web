@@ -56,3 +56,27 @@ export function deleteUsuario(id) {
         method: 'DELETE'
     });
 }
+
+export function buscaCEP(cep) {
+    var options = {
+        url: "https://viacep.com.br/ws/" + cep + "/json/ ",
+        method: 'GET'
+    };
+
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    })
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return fetch(options.url, options)
+    .then(response =>
+        response.json().then(json => {
+            if(!response.ok) {
+                return Promise.reject(json);
+            }
+            return json;
+        })
+    );
+}

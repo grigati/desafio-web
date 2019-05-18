@@ -1,5 +1,6 @@
 import React from 'react';
 import { buscaCEP, enviarCadastro } from './APIUtils';
+import InputMask from 'react-input-mask';
 
 class Cadastro extends React.Component {
     constructor(props) { 
@@ -30,12 +31,12 @@ class Cadastro extends React.Component {
       this.adicionarEmail = this.adicionarEmail.bind(this);
       this.adicionarTelefone = this.adicionarTelefone.bind(this);
       this.enviarCadastro = this.enviarCadastro.bind(this);
+      this.changeTelefone = this.changeTelefone.bind(this);
     }
 
     buscarCEP(event) {
       event.preventDefault();
-      console.log(this.state.usuario.cep)
-      buscaCEP(this.state.usuario.cep)
+      buscaCEP(this.state.usuario.cep.replace(/[.-]/g, ""))
       .then(response => {
         this.setState({usuario: {
           ...this.state.usuario,
@@ -99,8 +100,6 @@ class Cadastro extends React.Component {
         }]
       }
 
-      console.log(usuario)
-
       enviarCadastro(usuario)
       .then(response => {
         console.log("Cadastro efetuado com sucesso");
@@ -108,6 +107,16 @@ class Cadastro extends React.Component {
       .catch(erro => {
         console.error(erro);
       })
+    }
+
+    changeTelefone(event) {
+      var texto = event.currentTarget.value;
+      texto = texto.replace(/\D/g, "");
+  
+      if (texto.length <= 7) 
+        texto = texto.replace(/(\d{2})(\d{4})(\d{4})/g, "($1) $2-$3");
+      else
+        texto = texto.replace(/(\d{2})(\d{5})(\d{4})/g, "($1) $2-$3");
     }
 
     render() {
@@ -135,23 +144,23 @@ class Cadastro extends React.Component {
 
                   <div className="form-group">
                     <label htmlFor="input-cpf">CPF</label>
-                    <input type="text" className="form-control" id="input-cpf" name="cpf" value={this.state.usuario.cpf} onChange={this.changeInput} />
+                    <InputMask mask="999.999.999-99" type="text" className="form-control" id="input-cpf" name="cpf" value={this.state.usuario.cpf} onChange={this.changeInput} />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-cep">CEP</label>
-                    <input type="text" className="form-control" id="input-cep" name="cep" value={this.state.usuario.cep} onChange={this.changeInput} />
+                    <InputMask mask="99.999-999" type="text" className="form-control" id="input-cep" name="cep" value={this.state.usuario.cep} onChange={this.changeInput} />
                     <button className="btn btn-primary" onClick={(event) => this.buscarCEP(event)}>Buscar CEP</button>
                   </div>
                   
                   <div className="form-group">
                     <label htmlFor="input-logradouro">Logradouro</label>
-                    <input type="text" className="form-control" id="input-nome" name="logradouro" value={this.state.usuario.logradouro} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-logradouo" name="logradouro" value={this.state.usuario.logradouro} onChange={this.changeInput} />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-complemento">Complemento</label>
-                    <input type="text" className="form-control" id="input-nome" name="complemento" value={this.state.usuario.complemento} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-complemento" name="complemento" value={this.state.usuario.complemento} onChange={this.changeInput} />
                   </div>
 
                   <div className="form-group">
@@ -170,6 +179,13 @@ class Cadastro extends React.Component {
                   </div>
 
                   <div className="form-group">
+                  <label htmlFor="input-telefone-tipo">Tipo do Telefone</label>
+                    <select className="form-control" id="input-telefone-tipo" ref={this.inputTelefoneTipo}>
+                      <option>residencial</option>
+                      <option>comercial</option>
+                      <option>celular</option>
+                    </select>
+
                     <label htmlFor="input-telefone">Telefone</label>
                     { this.state.usuario.telefones.map((telefone, index) => {
                         return(
@@ -179,14 +195,8 @@ class Cadastro extends React.Component {
                         );
                     })}
 
-                    <input type="text" className="form-control" id="input-telefone" ref={this.inputTelefone} />
+                    <InputMask mask={(this.inputTelefoneTipo.current && this.inputTelefoneTipo.current.value === "celular") ? "(99) 99999-9999" : "(99) 9999-9999"} type="text" className="form-control" id="input-telefone" ref={this.inputTelefone} onChange={this.changeInput}/>
                     
-                    <label htmlFor="input-telefone-tipo">Tipo do Telefone</label>
-                    <select className="form-control" id="input-telefone-tipo" ref={this.inputTelefoneTipo}>
-                      <option>residencial</option>
-                      <option>comercial</option>
-                      <option>celular</option>
-                    </select>
                     <button className="btn btn-primary" onClick={this.adicionarTelefone}>Adicionar Telefone</button>
                   </div>
 

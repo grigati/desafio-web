@@ -27,6 +27,7 @@ class Cadastro extends React.Component {
       this.inputRole = React.createRef();
       this.inputSenha = React.createRef();
 
+      this.carregarUsuario = this.carregarUsuario.bind(this);
       this.buscarCEP = this.buscarCEP.bind(this);
       this.changeInput = this.changeInput.bind(this);
       this.adicionarEmail = this.adicionarEmail.bind(this);
@@ -34,10 +35,25 @@ class Cadastro extends React.Component {
       this.enviarCadastro = this.enviarCadastro.bind(this);
     }
 
-    componentDidMount() {
-      // Verifica se precisa buscar os dados do usuário
-      if (this.props.match.params.id) {
-        getUsuario(this.props.match.params.id)
+    carregarUsuario(id) {
+      if (id === null || id === undefined) {
+        this.setState({
+          usuario: {
+            "nome": "",
+            "cpf": "",
+            "cep": "",
+            "logradouro": "",
+            "complemento": "",
+            "bairro": "",
+            "cidade": "",
+            "uf": "",
+            "telefones": [],
+            "emails": []
+          }
+        })
+      }
+      else {
+        getUsuario(id)
         .then(response => {
           // Troca os campos null por string vazia
           let usuario = response;
@@ -52,6 +68,18 @@ class Cadastro extends React.Component {
           console.error(erro);
         })
       }
+    }
+
+    componentDidMount() {
+      // Verifica se precisa buscar os dados do usuário
+      if (this.props.match.params.id) {
+        this.carregarUsuario(this.props.match.params.id);
+      }
+    }
+
+    componentDidUpdate(prevProps) {
+      if (prevProps.match.params.id !== this.props.match.params.id)
+        this.carregarUsuario(this.props.match.params.id);
     }
 
     buscarCEP(event) {
@@ -160,6 +188,14 @@ class Cadastro extends React.Component {
 
     render() {
       if (this.props.usuarioAutenticado) {
+        if (this.props.usuarioAutenticado.roles[0].name === "ROLE_USER") {
+          return (
+            <div>
+                Você não tem autorização para acessar esse recurso.
+            </div>
+          );
+        }
+
         return (
               <div className="mx-auto" style={{maxWidth:"700px"}}>
                 <form onSubmit={this.enviarCadastro}>

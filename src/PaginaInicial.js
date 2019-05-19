@@ -67,8 +67,8 @@ class PaginaInicial extends React.Component {
                                     <tr key={usuario.id}>
                                         <th scope="row">{usuario.id}</th>
                                         <td>{usuario.nome}</td>
-                                        <td>{usuario.cpf}</td>
-                                        <td>{usuario.cep}</td>
+                                        <td>{usuario.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "$1.$2.$3-$4")}</td>
+                                        <td>{usuario.cep.replace(/(\d{2})(\d{3})(\d{3})/g, "$1.$2-$3")}</td>
                                         <td>{usuario.logradouro}</td>
                                         <td>{usuario.complemento}</td>
                                         <td>{usuario.bairro}</td>

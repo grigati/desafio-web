@@ -55,6 +55,7 @@ class PaginaInicial extends React.Component {
                             <th scope="col">UF</th>
                             <th scope="col">Permissões</th>
                             <th scope="col">Telefones</th>
+                            <th scope="col">E-mails</th>
                             { (this.props.usuarioAutenticado.roles[0].name === "ROLE_ADMIN") ?
                                 <th scope="col">Ações</th>
                                 : null
@@ -83,7 +84,18 @@ class PaginaInicial extends React.Component {
                                                     </span>
                                                 );
                                             })
-                                            : <span>Nenhum cadastrado</span>
+                                            : <span>Nenhum telefone cadastrado</span>
+                                            }
+                                        </td>
+                                        <td>{usuario.emails ?
+                                            usuario.emails.map(email => {
+                                                return(
+                                                    <span key={email.id} className="d-block">
+                                                        {email.email}
+                                                    </span>
+                                                );
+                                            })
+                                            : <span>Nenhum e-mail cadastrado</span>
                                             }
                                         </td>
                                         { (this.props.usuarioAutenticado.roles[0].name === "ROLE_ADMIN") ?

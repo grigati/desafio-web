@@ -80,8 +80,8 @@ class PaginaInicial extends React.Component {
                                             usuario.telefones.map(telefone => {
                                                 return(
                                                     <span key={telefone.id} className="d-block mb-3">
-                                                        { telefone.tipo + ": " +
-                                                         ((telefone.tipo === "comercial" || telefone.tipo === "residencial") ?
+                                                        <span className="d-block">{telefone.tipo + ":"}</span>
+                                                        { ((telefone.tipo === "comercial" || telefone.tipo === "residencial") ?
                                                             telefone.telefone.replace(/(\d{2})(\d{4})(\d{4})/g, "($1) $2-$3")
                                                             : telefone.telefone.replace(/(\d{2})(\d{5})(\d{4})/g, "($1) $2-$3"))
                                                         }

@@ -50,6 +50,13 @@ export function getUsuarios() {
     });
 }
 
+export function getUsuario(id) {
+    return request({
+        url: API_BASE_URL + "/usuario/" + id,
+        method: 'GET'
+    });
+}
+
 export function deleteUsuario(id) {
     return request({
         url: API_BASE_URL + "/usuario/" + id,
@@ -65,17 +72,21 @@ export function enviarCadastro(dadosCadastro) {
     });
 }
 
+export function editarCadastro(dadosCadastro) {
+    return request({
+        url: API_BASE_URL + "/usuario",
+        method: 'PUT',
+        body: JSON.stringify(dadosCadastro)
+    });
+}
+
 export function buscaCEP(cep) {
     var options = {
         url: "https://viacep.com.br/ws/" + cep + "/json/ ",
         method: 'GET'
     };
 
-    const headers = new Headers({
-        'Content-Type': 'application/json',
-    })
-
-    const defaults = {headers: headers};
+    const defaults = null;
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)

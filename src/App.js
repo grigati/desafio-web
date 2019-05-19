@@ -72,6 +72,8 @@ class App extends React.Component {
                    render={(props) => <Login onEntrarSucesso={this.handleEntrar} {...props} /> } />
             <Route path="/cadastrar" 
                    render={(props) => <Cadastro usuarioAutenticado={this.state.currentUser} {...props} /> }  />
+            <Route path="/editar/:id" 
+            render={(props) => <Cadastro usuarioAutenticado={this.state.currentUser} editar={true} {...props} /> }  />
           </Switch>
         </div>
       </div>

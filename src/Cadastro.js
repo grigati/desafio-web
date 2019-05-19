@@ -1,5 +1,5 @@
 import React from 'react';
-import { buscaCEP, enviarCadastro } from './APIUtils';
+import { buscaCEP, enviarCadastro, getUsuario, editarCadastro } from './APIUtils';
 import InputMask from 'react-input-mask';
 
 class Cadastro extends React.Component {
@@ -25,12 +25,33 @@ class Cadastro extends React.Component {
       this.inputTelefone = React.createRef();
       this.inputTelefoneTipo = React.createRef();
       this.inputRole = React.createRef();
+      this.inputSenha = React.createRef();
 
       this.buscarCEP = this.buscarCEP.bind(this);
       this.changeInput = this.changeInput.bind(this);
       this.adicionarEmail = this.adicionarEmail.bind(this);
       this.adicionarTelefone = this.adicionarTelefone.bind(this);
       this.enviarCadastro = this.enviarCadastro.bind(this);
+    }
+
+    componentDidMount() {
+      // Verifica se precisa buscar os dados do usuário
+      if (this.props.match.params.id) {
+        getUsuario(this.props.match.params.id)
+        .then(response => {
+          // Troca os campos null por string vazia
+          let usuario = response;
+          for(var key in usuario) {
+            if(null === usuario[key]) 
+              usuario[key] = '';
+          }
+
+          this.setState({usuario: usuario})
+        })
+        .catch(erro => {
+          console.error(erro);
+        })
+      }
     }
 
     buscarCEP(event) {
@@ -94,18 +115,47 @@ class Cadastro extends React.Component {
       var usuario = this.state.usuario;
       usuario = {
         ...usuario,
+        senha: this.inputSenha.current.value,
         roles: [{
           name: this.inputRole.current.value
         }]
       }
 
-      enviarCadastro(usuario)
-      .then(response => {
-        console.log("Cadastro efetuado com sucesso");
-      })
-      .catch(erro => {
-        console.error(erro);
-      })
+      if (this.props.editar) {
+        editarCadastro(usuario)
+        .then(response => {
+          console.log("Alteração efetuada com sucesso");
+          this.setState({
+            erro: false,
+            sucesso: true
+          })
+        })
+        .catch(erro => {
+          console.error(erro);
+          this.setState({
+            erro: true,
+            sucesso: false
+          })
+        })
+      }
+      else {
+        // Novo cadastro
+        enviarCadastro(usuario)
+        .then(response => {
+          console.log("Cadastro efetuado com sucesso");
+          this.setState({
+            erro: false,
+            sucesso: true
+          })
+        })
+        .catch(erro => {
+          console.error(erro);
+          this.setState({
+            erro: true,
+            sucesso: false
+          })
+        })
+      }
     }
 
     render() {
@@ -128,7 +178,7 @@ class Cadastro extends React.Component {
 
                   <div className="form-group">
                     <label htmlFor="input-senha">Senha*</label>
-                    <input type="password" className="form-control" id="input-senha" name="senha" value={this.state.usuario.senha} onChange={this.changeInput} />
+                    <input type="password" className="form-control" id="input-senha" name="senha" ref={this.inputSenha} />
                   </div>
 
                   <div className="form-group">
@@ -144,7 +194,7 @@ class Cadastro extends React.Component {
                   
                   <div className="form-group">
                     <label htmlFor="input-logradouro">Logradouro*</label>
-                    <input type="text" className="form-control" id="input-logradouo" name="logradouro" value={this.state.usuario.logradouro} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-logradouro" name="logradouro" value={this.state.usuario.logradouro} onChange={this.changeInput} />
                   </div>
 
                   <div className="form-group">
@@ -205,6 +255,20 @@ class Cadastro extends React.Component {
                   <small className="text-muted d-block pb-3">*campo obrigatório</small>
                   
                   <button type="submit" className="btn btn-primary">Enviar</button>
+
+                  { this.state.erro ? 
+                    <div className="mt-3 alert alert-danger" role="alert">
+                        Houve um erro ao enviar o formulário. Consulte o log do navegador para mais detalhes.
+                    </div>
+                    : null
+                  }
+
+                  { this.state.sucesso ? 
+                    <div className="mt-3 alert alert-success" role="alert">
+                        Formulário enviado com sucesso.
+                    </div>
+                    : null
+                  }
                 </form>
               </div>
           );

@@ -47,13 +47,12 @@ class Login extends React.Component {
                         <label htmlFor="exampleInputPassword1">Senha</label>
                         <input type="password" className="form-control" id="exampleInputPassword1" ref={this.senha} required />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary">Entrar</button>
                 </form>
 
                 { this.state.erro ? 
-                    <div className="alert alert-danger" role="alert">
-                        Houve um erro ao fazer o login.
-                        { this.state.erro }
+                    <div className="alert alert-danger mt-3" role="alert">
+                        Houve um erro ao fazer o login. Consulte o log do navegador para mais informações.
                     </div>
                   : null
                 }

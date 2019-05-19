@@ -1,5 +1,6 @@
 import React from 'react';
 import { solicitarLogin } from './APIUtils';
+import InputMask from 'react-input-mask';
 
 class Login extends React.Component {
     constructor(props) {
@@ -40,11 +41,11 @@ class Login extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="exampleInputcpf1">CPF</label>
-                        <input type="text" className="form-control" id="exampleInputcpf1" aria-describedby="cpfHelp" ref={this.cpf} />
+                        <InputMask mask="999.999.999-99" type="text" className="form-control" id="exampleInputcpf1" aria-describedby="cpfHelp" ref={this.cpf} required />
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Senha</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" ref={this.senha} />
+                        <input type="password" className="form-control" id="exampleInputPassword1" ref={this.senha} required />
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>

@@ -31,7 +31,6 @@ class Cadastro extends React.Component {
       this.adicionarEmail = this.adicionarEmail.bind(this);
       this.adicionarTelefone = this.adicionarTelefone.bind(this);
       this.enviarCadastro = this.enviarCadastro.bind(this);
-      this.changeTelefone = this.changeTelefone.bind(this);
     }
 
     buscarCEP(event) {
@@ -107,16 +106,6 @@ class Cadastro extends React.Component {
       .catch(erro => {
         console.error(erro);
       })
-    }
-
-    changeTelefone(event) {
-      var texto = event.currentTarget.value;
-      texto = texto.replace(/\D/g, "");
-  
-      if (texto.length <= 7) 
-        texto = texto.replace(/(\d{2})(\d{4})(\d{4})/g, "($1) $2-$3");
-      else
-        texto = texto.replace(/(\d{2})(\d{5})(\d{4})/g, "($1) $2-$3");
     }
 
     render() {

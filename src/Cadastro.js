@@ -209,28 +209,28 @@ class Cadastro extends React.Component {
 
                   <div className="form-group">
                     <label htmlFor="input-nome">Nome*</label>
-                    <input type="text" className="form-control" id="input-nome" name="nome" value={this.state.usuario.nome} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-nome" name="nome" value={this.state.usuario.nome} onChange={this.changeInput} required />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-senha">Senha*</label>
-                    <input type="password" className="form-control" id="input-senha" name="senha" ref={this.inputSenha} />
+                    <input type="password" className="form-control" id="input-senha" name="senha" ref={this.inputSenha} required />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-cpf">CPF*</label>
-                    <InputMask mask="999.999.999-99" type="text" className="form-control" id="input-cpf" name="cpf" value={this.state.usuario.cpf} onChange={this.changeInput} />
+                    <InputMask mask="999.999.999-99" type="text" className="form-control" id="input-cpf" name="cpf" value={this.state.usuario.cpf} onChange={this.changeInput} required />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-cep">CEP*</label>
-                    <InputMask mask="99.999-999" type="text" className="form-control" id="input-cep" name="cep" value={this.state.usuario.cep} onChange={this.changeInput} />
+                    <InputMask mask="99.999-999" type="text" className="form-control" id="input-cep" name="cep" value={this.state.usuario.cep} onChange={this.changeInput} required />
                     <button className="btn btn-primary my-2" onClick={(event) => this.buscarCEP(event)}>Buscar CEP</button>
                   </div>
                   
                   <div className="form-group">
                     <label htmlFor="input-logradouro">Logradouro*</label>
-                    <input type="text" className="form-control" id="input-logradouro" name="logradouro" value={this.state.usuario.logradouro} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-logradouro" name="logradouro" value={this.state.usuario.logradouro} onChange={this.changeInput} required />
                   </div>
 
                   <div className="form-group">
@@ -240,17 +240,17 @@ class Cadastro extends React.Component {
 
                   <div className="form-group">
                     <label htmlFor="input-bairro">Bairro*</label>
-                    <input type="text" className="form-control" id="input-bairro" name="bairro" value={this.state.usuario.bairro} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-bairro" name="bairro" value={this.state.usuario.bairro} onChange={this.changeInput} required />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-cidade">Cidade*</label>
-                    <input type="text" className="form-control" id="input-cidade" name="cidade" value={this.state.usuario.cidade} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-cidade" name="cidade" value={this.state.usuario.cidade} onChange={this.changeInput} required />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-uf">UF*</label>
-                    <input type="text" className="form-control" id="input-uf" name="uf" value={this.state.usuario.uf} onChange={this.changeInput} />
+                    <input type="text" className="form-control" id="input-uf" name="uf" value={this.state.usuario.uf} onChange={this.changeInput} required />
                   </div>
 
                   <div className="form-group">
@@ -262,6 +262,16 @@ class Cadastro extends React.Component {
                     </select>
 
                     <label htmlFor="input-telefone">Telefone*</label>
+                    <InputMask mask={(this.inputTelefoneTipo.current && this.inputTelefoneTipo.current.value === "celular") ? "(99) 99999-9999" : "(99) 9999-9999"} type="text" className="form-control" id="input-telefone" ref={this.inputTelefone} onChange={this.changeInput}/>
+                    <button className="btn btn-primary my-2" onClick={this.adicionarTelefone}>Adicionar Telefone</button>
+                    
+                    <span className="mt-2 d-block text-muted"> 
+                      { (this.state.usuario.telefones.length > 0) ?
+                        "Telefones adicionados: "
+                        :"Nenhum telefone adicionado"
+
+                      }
+                    </span>
                     { this.state.usuario.telefones.map((telefone, index) => {
                         return(
                           <div key={index}>
@@ -269,14 +279,21 @@ class Cadastro extends React.Component {
                           </div>
                         );
                     })}
-
-                    <InputMask mask={(this.inputTelefoneTipo.current && this.inputTelefoneTipo.current.value === "celular") ? "(99) 99999-9999" : "(99) 9999-9999"} type="text" className="form-control" id="input-telefone" ref={this.inputTelefone} onChange={this.changeInput}/>
-                    
-                    <button className="btn btn-primary my-2" onClick={this.adicionarTelefone}>Adicionar Telefone</button>
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="input-email">E-mail*</label>
+                    <input type="email" className="form-control" id="input-email" ref={this.inputEmail}/>
+                    <button className="btn btn-primary my-2" onClick={this.adicionarEmail}>Adicionar E-mail</button>
+
+                    <span className="mt-2 d-block text-muted"> 
+                      { (this.state.usuario.emails.length > 0) ?
+                        "E-mails adicionados: "
+                        :"Nenhum e-mail adicionado"
+
+                      }
+                    </span>
+
                     { this.state.usuario.emails.map((email, index) => {
                         return(
                           <div key={index}>
@@ -284,8 +301,6 @@ class Cadastro extends React.Component {
                           </div>
                         );
                     })}
-                    <input type="email" className="form-control" id="input-email" ref={this.inputEmail}/>
-                    <button className="btn btn-primary my-2" onClick={this.adicionarEmail}>Adicionar E-mail</button>
                   </div>
 
                   <small className="text-muted d-block pb-3">*campo obrigatório</small>
